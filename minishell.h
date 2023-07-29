@@ -6,16 +6,16 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 08:40:47 by gghaya            #+#    #+#             */
-/*   Updated: 2023/07/28 19:26:22 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/07/29 18:21:40 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include<stdio.h>
-# include<stdlib.h>
-# include<unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
 # include <readline/readline.h>
 # include <string.h>
 # include "ft_libft/libft.h"
@@ -42,6 +42,7 @@ typedef struct s_red
 	char					*token;
 	int						flag;
 	char					*file;
+	int						fquotes;
 	struct s_red			*next;
 }	t_red;
 
@@ -50,7 +51,7 @@ typedef struct s_tmpliste
 	char						*arg;
 	int							quotes;
 	int							fd;
-	struct s_red		*redirect;
+	struct s_red				*redirect;
 	struct s_tmpliste			*next;
 }	t_tmpliste;
 
@@ -86,4 +87,6 @@ bool		handel_redirection(t_red *tmp_red);
 bool		handel_redirection(t_red *tmp_red);
 bool		syntax_error(t_tmpliste *tmp);
 int			ft_strcmp(char *s1, char *s2);
+void		fix_redirection(t_tmpliste **tmp);
+void		delete_empty(t_tmpliste **tmp);
 #endif

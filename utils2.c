@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 11:21:20 by gghaya            #+#    #+#             */
-/*   Updated: 2023/07/25 14:34:30 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/07/29 14:18:56 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ void	ft_deletenode(t_tmpliste **begin_list, t_tmpliste *node)
 	{
 		if (cur == node)
 		{
-            prev->next = cur->next;
+			prev->next = cur->next;
 			free(cur);
 			return ;
 		}
-        prev = cur;
-        cur = cur->next;
+		prev = cur;
+		cur = cur->next;
 	}
 }
 
