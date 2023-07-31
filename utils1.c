@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 14:02:54 by gghaya            #+#    #+#             */
-/*   Updated: 2023/07/29 18:11:27 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/07/31 18:35:02 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,28 +23,25 @@ t_tmpliste	*ft_lstnw(char *content, int quotes)
 	list->quotes = quotes;
 	list->fd = -1;
 	list->next = NULL;
-	list->redirect = NULL;
 	return (list);
 }
 
-t_red	*ft_rednw(char *token)
+t_env	*ft_envnw(char *key)
 {
-	t_red	*list;
+	t_env	*list;
 
-	list = (t_red *)malloc(sizeof(t_red));
+	list = (t_env *)malloc(sizeof(t_tmpliste));
 	if (!list)
 		return (NULL);
-	list->token = token;
-	list->file = NULL;
+	list->key = key;
+	list->value = NULL;
 	list->next = NULL;
-	list->flag = -1;
-	list->fquotes = 0;
 	return (list);
 }
 
-void	ft_red_back(t_red **lst, t_red *new)
+void	ft_add_env(t_env **lst, t_env *new)
 {
-	t_red	*tmp;
+	t_env	*tmp;
 
 	tmp = (*lst);
 	if (*lst == NULL)
@@ -95,7 +92,7 @@ bool	balanced_quotes(char *str)
 			}
 			else
 			{
-				printf("error\n");
+				printf("Minishell : unbalanced quotation \n");
 				return (0);
 			}
 		}
@@ -103,3 +100,5 @@ bool	balanced_quotes(char *str)
 	}
 	return (1);
 }
+
+

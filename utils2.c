@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 11:21:20 by gghaya            #+#    #+#             */
-/*   Updated: 2023/07/29 14:18:56 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/07/31 14:16:35 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	ft_spacepipe(t_tmpliste **head, char *s, int *i)
 		liste = ft_lstnw(ft_strdup(ss), -1);
 	else if (s[*i] == '|')
 		liste = ft_lstnw(ft_strdup(ss), -2);
+	free(ss);
 	ft_lstad_back(head, liste);
 }
 
@@ -36,6 +37,7 @@ void	ft_deletenode(t_tmpliste **begin_list, t_tmpliste *node)
 	if (cur == node)
 	{
 		*begin_list = node->next;
+		free(node->arg);
 		free(node);
 		return ;
 	}
@@ -44,6 +46,7 @@ void	ft_deletenode(t_tmpliste **begin_list, t_tmpliste *node)
 		if (cur == node)
 		{
 			prev->next = cur->next;
+			free(cur->arg);
 			free(cur);
 			return ;
 		}
@@ -96,4 +99,5 @@ void	ft_stclear(t_tmpliste **lst, void (*del)(void*))
 		free((*lst));
 		(*lst) = p;
 	}
+	free(*lst);
 }

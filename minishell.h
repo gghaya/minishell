@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 08:40:47 by gghaya            #+#    #+#             */
-/*   Updated: 2023/07/29 18:21:40 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/07/31 20:04:10 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ typedef struct s_env
 {
 	char			*key;
 	char			*value;
-	int				position;
-	int				index;
+	// int				position;
+	// int				index;
 	struct s_env	*next;
 }	t_env;
 
@@ -37,28 +37,28 @@ typedef struct s_redirection
 	struct s_redirection	*next;
 }	t_redirect;
 
-typedef struct s_red
-{
-	char					*token;
-	int						flag;
-	char					*file;
-	int						fquotes;
-	struct s_red			*next;
-}	t_red;
+// typedef struct s_red
+// {
+// 	char					*token;
+// 	int						flag;
+// 	char					*file;
+// 	int						fquotes;
+// 	struct s_red			*next;
+// }	t_red;
 
 typedef struct s_tmpliste
 {
 	char						*arg;
 	int							quotes;
 	int							fd;
-	struct s_red				*redirect;
 	struct s_tmpliste			*next;
 }	t_tmpliste;
 
 typedef struct s_finalstruct
 {
-	char		**cmd;
-	t_redirect	*rdct;
+	char					**cmd;
+	t_redirect				*rdct;
+	struct s_finalstruct	*next;
 }	t_final;
 
 bool		balanced_quotes(char *str);
@@ -72,21 +72,30 @@ void		ft_string(t_tmpliste **head, char *s, int *i);
 void		ft_stclear(t_tmpliste **lst, void (*del)(void*));
 void		ft_deletenode(t_tmpliste **begin_list, t_tmpliste *node);
 void		ft_deletespace(t_tmpliste **begin_list);
-bool		ft_help(t_tmpliste *liste);
+bool		ft_help(t_tmpliste *liste, char	**envp);
 int			not_in(char *string, char c);
-void		ft_redirection(t_tmpliste **begin_list);
+void		ft_redirection(t_tmpliste **begin_list, int k);
 t_tmpliste	*add_node(t_tmpliste *prev, char *content);
 char		*ft_check_cmd(char *arg, int	*i);
-t_red		*ft_check_redirect(char *arg, t_red	*redirect, int	*i);
-t_red		*ft_rednw(char *token);
-void		ft_red_back(t_red **lst, t_red *new);
-void		ft_red1(char	*arg, int	*i, t_red	**red);
+t_tmpliste	*ft_check_redirect(char *arg, t_tmpliste	*redirect,
+				int	*i, int k);
+t_tmpliste	*ft_red1(char	*arg, int	*i,  t_tmpliste	*red, int k);
 int			lstsize(t_tmpliste *lst);
 int			is_token(char *string);
-bool		handel_redirection(t_red *tmp_red);
-bool		handel_redirection(t_red *tmp_red);
 bool		syntax_error(t_tmpliste *tmp);
 int			ft_strcmp(char *s1, char *s2);
-void		fix_redirection(t_tmpliste **tmp);
 void		delete_empty(t_tmpliste **tmp);
+int			sstrlen(const char *s);
+bool		help_syntax(t_tmpliste *cur, t_tmpliste *tmp);
+void		ft_heredoc(t_tmpliste **tmp);
+void		deletesp(t_tmpliste **tmp);
+int			ft_hendel_heredoc(t_tmpliste *h_doc);
+t_env		*ft_envnw(char *key);
+void		ft_add_env(t_env **lst, t_env *new);
+t_env		*fill_env(char	**envp);
+void		ft_expanding(t_tmpliste **tmp, t_env	*env);
+char		*expand(char	*arg, t_env	*env);
+char		*fill_arg(char	*arg, char	**substring, char	**key);
+char		*getenv_(char	*key, t_env *env);
+int			is_id(char c);
 #endif

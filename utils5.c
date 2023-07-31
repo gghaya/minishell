@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:12:40 by gghaya            #+#    #+#             */
-/*   Updated: 2023/07/29 18:28:24 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/07/31 10:56:59 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,25 @@ char	*ft_check_cmd(char *arg, int	*i)
 	int		start;
 	char	*cmd;
 
+	cmd = NULL;
 	start = (*i);
 	while ((arg[*i] && arg[*i] != '>' && arg[*i] != '<'))
 		(*i)++;
+	// if ((*i) > start)
 	cmd = ft_substr(arg, start, (*i) - start);
 	return (cmd);
 }
 
-t_red	*ft_check_redirect(char	*arg, t_red	*red, int	*i)
+t_tmpliste	*ft_check_redirect(char	*arg, t_tmpliste	*red, int	*i, int k)
 {
+	t_tmpliste	*tmp;
+
+	if ((*i) == sstrlen(arg))
+		return (red);
+	tmp = red;
 	while (arg[*i])
-		ft_red1(arg, i, &red);
-	return (red);
+		tmp = ft_red1(arg, i, tmp, k);
+	return (tmp);
 }
 
 void	ft_print(t_tmpliste *t)
@@ -36,12 +43,12 @@ void	ft_print(t_tmpliste *t)
 	while (t != NULL)
 	{
 		printf("command (%s) quote (%d)\n", t->arg, t->quotes);
-		while (t->redirect != NULL)
-		{
-			printf ("	**redirection : (%s) file : (%s) FILE_QUOTES : %d\n",
-				t->redirect->token, t->redirect->file, t->redirect->fquotes);
-			t->redirect = t->redirect->next;
-		}
+		// while (t->redirect != NULL)
+		// {
+		// 	printf ("	**redirection : (%s) file : (%s) FILE_QUOTES : %d\n",
+		// 		t->redirect->token, t->redirect->file, t->redirect->fquotes);
+		// 	t->redirect = t->redirect->next;
+		// }
 		t = t->next;
 	}
 	return ;
