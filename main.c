@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 08:56:48 by gghaya            #+#    #+#             */
-/*   Updated: 2023/07/31 17:30:26 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/01 19:33:04 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int	main(int ac, char **av, char **envp)
 	liste = NULL;
 	(void)ac;
 	(void)av;
-	// (void)envp;
+	(void)envp;
+	// without_dollar("$HOME$");
 	while (1)
 		ft_help(liste, envp);
 	return (0);

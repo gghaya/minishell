@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 08:40:47 by gghaya            #+#    #+#             */
-/*   Updated: 2023/07/31 20:04:10 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/01 19:09:16 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,9 @@ void		ft_add_env(t_env **lst, t_env *new);
 t_env		*fill_env(char	**envp);
 void		ft_expanding(t_tmpliste **tmp, t_env	*env);
 char		*expand(char	*arg, t_env	*env);
-char		*fill_arg(char	*arg, char	**substring, char	**key);
+char		*fill_arg(char	*arg, char	**substring, int *len, int klen);
 char		*getenv_(char	*key, t_env *env);
 int			is_id(char c);
+void		ft_envclear(t_env **lst, void (*del)(void*));
+int			*without_dollar(char	*s);
 #endif

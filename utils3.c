@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:20:33 by gghaya            #+#    #+#             */
-/*   Updated: 2023/07/31 22:52:06 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/01 20:09:41 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,16 @@ bool	ft_help(t_tmpliste *liste, char	**envp)
 	char	*input;
 	int		k;
 	t_env	*env_struct;
-
+	// (void)envp;
 	k = 0;
 	input = readline("Minishell> ");
+	if (!input)
+		exit(1);
 	add_history(input);
 	if (balanced_quotes(input))
 	{
 		liste = ft_splt(input);
+		free(input);
 		ft_deletespace(&liste);
 		ft_redirection(&liste, k);
 		delete_empty(&liste);
@@ -57,7 +60,10 @@ bool	ft_help(t_tmpliste *liste, char	**envp)
 			ft_heredoc(&liste);
 			deletesp(&liste);
 			env_struct = fill_env(envp);
+			// // free(env_struct);
 			ft_expanding(&liste, env_struct);
+			// // // system("leaks minishell");
+			ft_envclear(&env_struct, free);
 			ft_print(liste);
 		}
 		ft_stclear(&liste, free);

@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 18:12:20 by gghaya            #+#    #+#             */
-/*   Updated: 2023/07/31 23:18:57 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/01 21:55:52 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,56 +30,41 @@ char	*getenv_(char	*key, t_env *env)
 	return (NULL);
 }
 
-char	*fill_arg(char	*arg, char	**substring, char	**key)
+char	*fill_arg(char	*arg, char	**substring, int *len, int klen)
 {
 	int		i;
-	int		start;
-	char	*res = malloc (sizeof (char) * 10);
+	char	*res = malloc (sizeof (char) * (len[0] - len[1] + klen + 1));
+		if(!res)
+			return (NULL);
 	int		j;
-	(void)key;
 	i = 0;
-	start = 0;
 	j = 0;
-	// while (arg[i] && arg[i] != '$')
-	// 	i++;
-	// // puts(arg + i);
-	// if (i > start)
-	// {
-	// 	ft_memcpy(res, arg, i);
-	// 	i++;
-	// }
-	// printf("%d\n",i);
-	// puts(res);
-	// while (substring[j])
-	// {
-	// 	puts(substring[j]);
-	// // 	j++;
-	// // }
-	// puts("**");
+	printf("%d____%d\n",len[0], len[1]);
 	while (arg[i])
 	{
-		start = i;
-		while(arg[i] && arg[i] != '$')
-			i++;
-		if(i > start)
-			ft_memcpy(res + start, ft_substr(arg, start, i - start), i - start);
-		start = i;
-		while (arg[i] && is_id(arg[i]) == 1)
-			i++;
-		if (substring[j] != NULL)
+		if (arg[i] && arg[i] != '$')
 		{
-			puts(substring[0]);
-			ft_memcpy(res + start, substring[j], ft_strlen(substring[j]));
-			puts("res: ");
-			puts(res);
-			printf("j  %d\n", j);
-			j++;
-		}
-		else
+			ft_memcpy(res + ft_strlen(res), ft_strdup(&arg[i]), 1);
 			i++;
+		}
+		else if (arg[i] && arg[i] == '$')
+		{
+			i++;
+			if ((!arg[i]|| arg[i] == '$'))
+				ft_memcpy(res + ft_strlen(res), ft_strdup(&arg[i]), 1);
+			else
+			{
+			while (arg[i] && is_id(arg[i]) == 1)
+				i++;
+			if (substring[j] != NULL)
+			{
+				ft_memcpy(res + ft_strlen(res), substring[j], ft_strlen(substring[j]));
+			}
+				puts(substring[j]);
+			j++;
+			}
+		}
 	}
-	puts("fin :");
-	puts(res);
 	return (res);
 }
 
@@ -88,39 +73,35 @@ char	*expand(char	*arg, t_env	*env)
 	int		i;
 	int		start;
 	char	**substring = NULL;
-	char	**keys = NULL;
+	char	*key = NULL;
 	int		j;
-	int	len = 0;
-
+	int	*len = without_dollar(arg);
+	int	klen = 0;
 	i = 0;
 	start = -1;
 	j = 0;
+
+	substring =  malloc(sizeof(char *)*(len[1] + 1));
+	substring[len[1]] = NULL;
 	while (arg[i])
 	{
-		if (arg[i] == '$')
-			len++;
-		i++;
-	}
-	i = 0;
-	keys = malloc(sizeof(char *)*(len + 1));
-	substring =  malloc(sizeof(char *)*(len + 1));
-	while (arg[i])
-	{
-		if (arg[i] && arg[i] == '$')
+		if (arg[i] && arg[i] == '$' && arg[i + 1] && arg[i+ 1] != '$')
 		{
 			start = (++i);
 			while (arg[i] && is_id(arg[i]) == 1)
 				i++;
-			keys[j] = ft_substr(arg, start, i - start);
-			substring[j] = getenv_(keys[j], env);
+			if(i == start)
+				break;
+			key = ft_substr(arg, start, i - start);
+			substring[j] = getenv_(key, env);
+			if (substring[j] != NULL)
+				klen = klen + ft_strlen(substring[j]);
 			j++;
 		}
-		i++;
+		else
+			i++;
 	}
-	if ((size_t)i == ft_strlen(arg))
-		keys[j] = arg;
-	// exit(0);
-	return (fill_arg(arg, substring, keys));
+	return (fill_arg(arg, substring, len, klen));
 }
 
 void	ft_expanding(t_tmpliste **tmp, t_env	*env)
@@ -131,7 +112,41 @@ void	ft_expanding(t_tmpliste **tmp, t_env	*env)
 	while (cur)
 	{
 		if (cur->quotes == 0 || cur->quotes == 2)
+		{
+			// s = ft_strdup(cur->arg);
+			// free(cur->arg);
 			cur->arg = expand(cur->arg, env);
+			// free(s);
+		}
 		cur = cur->next;
 	}
+}
+
+int	*without_dollar(char	*s)
+{
+	int	i;
+	int	*len =malloc(2*sizeof(int));
+
+	i = 0;
+	len[0] = 0;//number of caracteres without $
+	len[1] = 0;//number of $
+	while (s[i] != '\0')
+	{
+		if (s[i] && s[i] == '$')
+		{
+			if (s[i+1] && s[i + 1]!= '$')
+				len[1]++;
+			else
+				len[0]++;
+			i++;
+			while (s[i] && is_id(s[i]) == 1)
+				i++;
+		}
+		else
+		{
+			i++;			
+			len[0]++;
+		}
+	}
+	return (len);
 }

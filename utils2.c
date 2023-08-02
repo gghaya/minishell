@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 11:21:20 by gghaya            #+#    #+#             */
-/*   Updated: 2023/07/31 14:16:35 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/01 16:38:30 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,23 @@ void	ft_stclear(t_tmpliste **lst, void (*del)(void*))
 	{
 		p = (*lst)->next;
 		del((*lst)->arg);
+		free((*lst));
+		(*lst) = p;
+	}
+	free(*lst);
+}
+
+void	ft_envclear(t_env **lst, void (*del)(void*))
+{
+	t_env	*p;
+
+	if (!lst || !*lst || !del)
+		return ;
+	while (*lst)
+	{
+		p = (*lst)->next;
+		del((*lst)->key);
+		del((*lst)->value);
 		free((*lst));
 		(*lst) = p;
 	}
