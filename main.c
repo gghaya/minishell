@@ -6,23 +6,28 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 08:56:48 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/01 19:33:04 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/02 18:31:46 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	g_status = 0;
 int	main(int ac, char **av, char **envp)
 {
 	t_tmpliste	*liste;
+	t_env	*env_struct = fill_env(envp);
 
 	liste = NULL;
 	(void)ac;
 	(void)av;
-	(void)envp;
+	// (void)envp;
+	// (void)env_struct;
 	// without_dollar("$HOME$");
+	// is_exitstatus("$HOME$");
 	while (1)
-		ft_help(liste, envp);
+		ft_help(liste, env_struct);
+	// nw_lenght("--$?--$HOME--$?-$H", env_struct);
 	return (0);
 }
 

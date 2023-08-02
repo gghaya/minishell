@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 18:12:20 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/01 21:55:52 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/02 19:03:15 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*getenv_(char	*key, t_env *env)
 	while (env)
 	{
 		if (strcmp(env->key, key) == 0)
-			return (env->value);
+			return (ft_strdup(env->value));
 		env = env->next;
 	}
 	return (NULL);
@@ -39,7 +39,7 @@ char	*fill_arg(char	*arg, char	**substring, int *len, int klen)
 	int		j;
 	i = 0;
 	j = 0;
-	printf("%d____%d\n",len[0], len[1]);
+	// printf("%d____%d\n",len[0], len[1]);
 	while (arg[i])
 	{
 		if (arg[i] && arg[i] != '$')
@@ -50,8 +50,18 @@ char	*fill_arg(char	*arg, char	**substring, int *len, int klen)
 		else if (arg[i] && arg[i] == '$')
 		{
 			i++;
-			if ((!arg[i]|| arg[i] == '$'))
-				ft_memcpy(res + ft_strlen(res), ft_strdup(&arg[i]), 1);
+			// if(!arg[i] || arg[i] == '$' || arg[i] == '?')
+			// {
+				if (!arg[i])
+					ft_memcpy(res + ft_strlen(res), ft_strdup("$"), 1);
+				else if ( arg[i] == '$')
+					ft_memcpy(res + ft_strlen(res), ft_strdup(&arg[i]), 1);
+				else if (arg[i] == '?')
+				{
+					ft_memcpy(res + ft_strlen(res), ft_itoa(g_status), ft_strlen(ft_itoa(g_status)));
+					i++;
+				}
+			// }
 			else
 			{
 			while (arg[i] && is_id(arg[i]) == 1)
@@ -60,7 +70,6 @@ char	*fill_arg(char	*arg, char	**substring, int *len, int klen)
 			{
 				ft_memcpy(res + ft_strlen(res), substring[j], ft_strlen(substring[j]));
 			}
-				puts(substring[j]);
 			j++;
 			}
 		}
@@ -83,9 +92,10 @@ char	*expand(char	*arg, t_env	*env)
 
 	substring =  malloc(sizeof(char *)*(len[1] + 1));
 	substring[len[1]] = NULL;
+	// arg = is_exitstatus(arg);
 	while (arg[i])
 	{
-		if (arg[i] && arg[i] == '$' && arg[i + 1] && arg[i+ 1] != '$')
+		if (arg[i] && arg[i] == '$' && arg[i + 1] && arg[i+ 1] != '$' && arg[i + 1] != '?')
 		{
 			start = (++i);
 			while (arg[i] && is_id(arg[i]) == 1)
@@ -115,7 +125,8 @@ void	ft_expanding(t_tmpliste **tmp, t_env	*env)
 		{
 			// s = ft_strdup(cur->arg);
 			// free(cur->arg);
-			cur->arg = expand(cur->arg, env);
+			// cur->arg = expand(cur->arg, env);
+			cur->arg = expandd(cur->arg, env);
 			// free(s);
 		}
 		cur = cur->next;
@@ -148,5 +159,6 @@ int	*without_dollar(char	*s)
 			len[0]++;
 		}
 	}
+	printf("number of caracteres without $ : %d  $: %d", len[0], len[1]);
 	return (len);
 }

@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:20:33 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/01 20:09:41 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/02 18:29:58 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,10 @@ void	ft_redirection(t_tmpliste **begin_list, int k)
 	free(cur);
 }
 
-bool	ft_help(t_tmpliste *liste, char	**envp)
+bool	ft_help(t_tmpliste *liste, t_env	*env)
 {
 	char	*input;
 	int		k;
-	t_env	*env_struct;
 	// (void)envp;
 	k = 0;
 	input = readline("Minishell> ");
@@ -57,13 +56,13 @@ bool	ft_help(t_tmpliste *liste, char	**envp)
 			return (ft_stclear(&liste, free), 0);
 		else
 		{
-			ft_heredoc(&liste);
+			// env_struct = fill_env(envp);
+			ft_heredoc(&liste, env);
 			deletesp(&liste);
-			env_struct = fill_env(envp);
 			// // free(env_struct);
-			ft_expanding(&liste, env_struct);
+			ft_expanding(&liste, env);
 			// // // system("leaks minishell");
-			ft_envclear(&env_struct, free);
+			// ft_envclear(&env_struct, free);
 			ft_print(liste);
 		}
 		ft_stclear(&liste, free);

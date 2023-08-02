@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:09:34 by gghaya            #+#    #+#             */
-/*   Updated: 2023/07/31 10:22:26 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/02 16:20:26 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ bool	syntax_error(t_tmpliste *tmp)
 {
 	if (handel_pipe(tmp) == 0)
 	{
+		g_status = 258;
 		printf("minishell: Syntax Error\n");
 		return (0);
 	}
@@ -83,11 +84,6 @@ t_tmpliste	*ft_red1(char	*arg, int	*i,  t_tmpliste	*red, int k)
 		if ((*i) > k)
 			node = add_node(node, ft_substr(arg, k, (*i) - k));
 	}
-	// else
-	// {
-	// 	node = red;
-	// 	(*i)++;
-	// }
 	return (node);
 }
 

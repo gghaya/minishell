@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:17:30 by gghaya            #+#    #+#             */
-/*   Updated: 2023/07/31 17:30:08 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/02 19:05:08 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	delete_empty(t_tmpliste **tmp)
 	free(cur);
 }
 
-void	ft_heredoc(t_tmpliste **tmp)
+void	ft_heredoc(t_tmpliste **tmp, t_env	*env)
 {
 	t_tmpliste	*cur;
 	t_tmpliste	*prev;
@@ -75,7 +75,7 @@ void	ft_heredoc(t_tmpliste **tmp)
 			}
 			cur = add_node(prev, str);
 			if (cur != NULL)
-				ft_hendel_heredoc(cur);
+				ft_hendel_heredoc(cur, env);
 		}
 		else
 			cur = cur->next;
@@ -104,21 +104,21 @@ void	deletesp(t_tmpliste **tmp)
 	}
 }
 
-int	ft_hendel_heredoc(t_tmpliste *h_doc)
+int	ft_hendel_heredoc(t_tmpliste *h_doc, t_env	*env)
 {
 	char	*line;
 	int		fildes[2];
 
 	pipe(fildes);
-	// if (!pipe)
-	// 	return (-1);
 	while (1)
 	{
 		line = readline(">");
-		// puts(h_doc->arg);
-		write(fildes[1], line, ft_strlen(line));
 		if (ft_strcmp(line, h_doc->arg) == 0)
 			break ;
+		line = expandd(line, env);
+		puts("line");
+		puts(line);
+		write(fildes[1], line, ft_strlen(line));
 		free(line);
 	}
 	free(line);
