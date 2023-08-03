@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 08:40:47 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/03 19:51:09 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/03 23:37:36 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@
 # include "ft_libft/libft.h"
 # include <stdbool.h>
 
-#define IN	0
-#define OUT	1
-#define APPEND	2
-#define HEREDOC	3
+# define IN	0
+# define OUT	1
+# define APPEND	2
+# define HEREDOC	3
 
 extern int g_status;
 
@@ -32,8 +32,6 @@ typedef struct s_env
 {
 	char			*key;
 	char			*value;
-	// int				position;
-	// int				index;
 	struct s_env	*next;
 }	t_env;
 
@@ -100,11 +98,13 @@ int			is_id(char c);
 void		ft_envclear(t_env **lst, void (*del)(void*));
 int			*without_dollar(char	*s);
 // char		*is_exitstatus(char *arg);
-int			nw_lenght(char*	arg, t_env	*env);
-char	*expandd(char	*s, t_env *env);
-void	ft_join(t_tmpliste **tmp);
+int			nw_lenght(char	*arg, t_env	*env);
+char		*expandd(char	*s, t_env *env);
+void		ft_join(t_tmpliste **tmp);
 t_redirect	*ft_rednw(int token);
-int	get_token(char	*s);
-void collect_red(t_tmpliste	**tmp);
-t_tmpliste *rm_node(t_tmpliste **begin_list, t_tmpliste *node);
+int			get_token(char	*s);
+void		collect_red(t_tmpliste	**tmp);
+t_tmpliste	*rm_node(t_tmpliste **begin_list, t_tmpliste *node);
+t_tmpliste	*rm(t_tmpliste **begin_list, t_tmpliste *node);
+void		ft_help1(t_tmpliste *liste, t_env *env);
 #endif

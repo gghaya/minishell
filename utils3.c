@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:20:33 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/03 18:55:34 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/03 23:38:53 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ bool	ft_help(t_tmpliste *liste, t_env	*env)
 {
 	char	*input;
 	int		k;
-	// (void)envp;
+
 	k = 0;
-	input = readline("Minishell> ");
+	input = readline("Minishell$> ");
 	if (!input)
 		exit(1);
 	add_history(input);
@@ -55,19 +55,7 @@ bool	ft_help(t_tmpliste *liste, t_env	*env)
 		if (syntax_error(liste) == 0)
 			return (ft_stclear(&liste, free), 0);
 		else
-		{
-			deletesp(&liste);
-			ft_heredoc(&liste, env);
-			// // free(env_struct);
-			ft_expanding(&liste, env);
-			ft_join(&liste);
-			// system("leaks minishell");
-			
-			collect_red(&liste);
-			// ft_join(&liste);
-			// // // system("leaks minishell");
-			// ft_print(liste);
-		}
+			ft_help1(liste, env);
 		ft_stclear(&liste, free);
 	}
 	return (1);
@@ -108,36 +96,4 @@ t_tmpliste	*add_node(t_tmpliste *prev, char *content)
 	prev->next = node;
 	node->next = tmp;
 	return (node);
-}
-
-t_env	*fill_env(char	**envp)
-{
-	t_env	*env;
-	t_env	*begin_env;
-	int		i;
-	int		j;
-	int		start;
-
-	i = 0;
-	start = 0;
-	begin_env = NULL;
-	while (envp[i])
-	{
-		j = 0;
-		while (envp[i][j] && envp[i][j] != '=')
-			j++;
-		env = ft_envnw(ft_substr(envp[i], 0, j));
-		start = ++j;
-		while (envp[i][j] && envp[i][j] != '\0')
-			j++;
-		env->value = ft_substr(envp[i], start, j - start);
-		ft_add_env(&begin_env, env);
-		i++;
-	}
-	// while ((begin_env))
-	// {
-	// 	printf ("key: <<%s>> ---->value:  <<%s>> \n", (begin_env)->key, (begin_env)->value);
-	// 	(begin_env) = (begin_env)->next;
-	// }
-	return (begin_env);
 }

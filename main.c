@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 08:56:48 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/03 17:55:12 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/03 23:25:53 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,9 @@ int	main(int ac, char **av, char **envp)
 	liste = NULL;
 	(void)ac;
 	(void)av;
-	// (void)envp;
-	// (void)env_struct;
-	// without_dollar("$HOME$");
-	// is_exitstatus("$HOME$");
 	while (1)
 		ft_help(liste, env_struct);
 	ft_envclear(&env_struct, free);
-	// nw_lenght("$HOME", env_struct);
 	return (0);
 }
 

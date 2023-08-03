@@ -6,40 +6,11 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 13:21:15 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/03 18:54:54 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/03 23:56:54 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// char    *is_exitstatus(char *arg)
-// {
-// 	int i;
-// 	char    *s;
-
-// 	i = 0;
-// 	s = malloc();
-
-// 	while (arg[i])
-// 	{
-// 		i++;
-// 	}
-// 	while (arg[i])
-// 	{
-// 		if (arg[i]!= '$')
-// 		{
-// 			arg[i] = 
-// 		}
-// 		if (arg[i] == '$' && arg[i + 1] && arg[i + 1] == '?')
-// 		{
-
-// 			arg[i+1] = ft_itoa(arg[i+1]);
-// 		}
-// 		i++;
-// 	}
-// 	puts(arg);
-// 	return (arg);
-// }
 
 int	nw_lenght(char	*arg, t_env	*env)
 {
@@ -159,7 +130,8 @@ void	ft_join(t_tmpliste **tmp)
 		if (cur->quotes != -1 && cur->quotes != -2)
 		{
 			cur = cur->next;
-			while (cur && (cur->quotes != -1 && cur->quotes != -2 && is_token(cur->arg) == 0))
+			while (cur && (cur->quotes != -1 && cur->quotes != -2
+					&& is_token(cur->arg) == 0))
 			{
 				prev->arg = ft_strjoin(prev->arg, cur->arg);
 				ft_deletenode(tmp, prev->next);
@@ -171,15 +143,16 @@ void	ft_join(t_tmpliste **tmp)
 	}
 }
 
-void collect_red(t_tmpliste	**tmp)
+void	collect_red(t_tmpliste	**tmp)
 {
 	t_tmpliste	*cur;
-	int	i = 0;
+	int			i;
 
+	i = 0;
 	cur = (*tmp);
 	while (cur)
 	{
-		if (cur->arg[0] == '>' || cur->arg[0] == '<')
+		if ((cur->arg[0] == '>' || cur->arg[0] == '<'))
 		{
 			if (cur->arg[1] == '>' || cur->arg[1] == '<')
 			{
@@ -191,7 +164,7 @@ void collect_red(t_tmpliste	**tmp)
 				cur->redct = ft_rednw(get_token(ft_substr(cur->arg, 0, 1)));
 				i = 1;
 			}
-			// cur->redct->file = ft_substr(cur->arg, i, ft_strlen(cur->arg));
+			cur->redct->file = ft_substr(cur->arg, i, ft_strlen(cur->arg));
 			free(cur->arg);
 			cur->arg = NULL;
 			cur = cur->next;
@@ -213,3 +186,6 @@ int	get_token(char	*s)
 		return (free(s), 3);
 	return (free(s), -1);
 }
+
+
+int	collect_help

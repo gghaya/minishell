@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:17:30 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/03 20:01:08 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/03 23:20:53 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,19 +92,27 @@ void	deletesp(t_tmpliste **tmp)
 	t_tmpliste	*prev;
 
 	cur = (*tmp);
-	prev = NULL;
+	prev = cur;
 	while (cur)
 	{
-		if (cur->quotes == -2 || is_token(cur->arg))
-		{
-			if (prev && prev->quotes == -1)
-				ft_deletenode(tmp, prev);
-			cur = cur->next;
-			if (cur->quotes == -1)
-				ft_deletenode(tmp, cur);
-		}
 		prev = cur;
-		cur = cur->next;
+		if (cur->quotes == -1 && cur->next && is_token(cur->next->arg) == 1)
+		{
+			cur = rm(tmp, cur);
+			// cur = cur->next;
+		}
+		else if (cur->quotes == -2 || is_token(cur->arg) == 1)
+		{
+			if ((cur->next) && cur->next->quotes == -1)
+			{
+				cur = rm(tmp, cur->next);
+				// cur = cur->next;
+			}
+			else
+				cur= cur->next;
+		}
+		else
+			cur = cur->next;
 	}
 }
 
@@ -127,3 +135,21 @@ int	ft_hendel_heredoc(t_tmpliste *h_doc, t_env	*env)
 	close(fildes[1]);
 	return (fildes[0]);
 }
+
+// void	delete_empty(t_tmpliste **tmp)
+// {
+// 	t_tmpliste	*cur;
+// 	t_tmpliste	*prev;
+
+// 	cur = (*tmp);
+// 	prev = cur;
+// 	while (cur)
+// 	{
+// 		if ((cur->next) && ft_strcmp(cur->next->arg, "") == 0 && cur->next->quotes == 0)
+// 			cur = rm_node(tmp, cur->next);
+// 		else
+// 			cur = cur->next;
+// 		prev = cur;
+// 		// cur = prev->next;
+// 	}
+// }
