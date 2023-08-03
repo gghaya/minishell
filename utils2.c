@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 11:21:20 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/01 16:38:30 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/03 19:52:25 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,4 +117,33 @@ void	ft_envclear(t_env **lst, void (*del)(void*))
 		(*lst) = p;
 	}
 	free(*lst);
+}
+
+t_tmpliste *rm_node(t_tmpliste **begin_list, t_tmpliste *node)
+{
+	t_tmpliste	*cur;
+	t_tmpliste	*prev;
+
+	cur = *begin_list;
+	prev = NULL;
+	if (cur == node)
+	{
+		*begin_list = node->next;
+		free(node->arg);
+		free(node);
+		return (NULL);
+	}
+	while (cur != NULL)
+	{
+		if (cur == node)
+		{
+			prev->next = cur->next;
+			free(cur->arg);
+			free(cur);
+			return (prev);
+		}
+		prev = cur;
+		cur = cur->next;
+	}
+	return (NULL);
 }

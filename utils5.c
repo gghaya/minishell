@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:12:40 by gghaya            #+#    #+#             */
-/*   Updated: 2023/07/31 10:56:59 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/03 17:10:10 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,13 @@ void	ft_print(t_tmpliste *t)
 	while (t != NULL)
 	{
 		printf("command (%s) quote (%d)\n", t->arg, t->quotes);
-		// while (t->redirect != NULL)
-		// {
-		// 	printf ("	**redirection : (%s) file : (%s) FILE_QUOTES : %d\n",
-		// 		t->redirect->token, t->redirect->file, t->redirect->fquotes);
-		// 	t->redirect = t->redirect->next;
-		// }
+		// puts(t->arg);
+		while (t->redct != NULL)
+		{
+			printf ("	->redction : (%d) file : (%s)\n",
+				t->redct->token, t->redct->file);
+			t->redct = t->redct->next;
+		}
 		t = t->next;
 	}
 	return ;

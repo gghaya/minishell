@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:20:33 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/02 18:29:58 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/03 18:55:34 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,17 @@ bool	ft_help(t_tmpliste *liste, t_env	*env)
 			return (ft_stclear(&liste, free), 0);
 		else
 		{
-			// env_struct = fill_env(envp);
-			ft_heredoc(&liste, env);
 			deletesp(&liste);
+			ft_heredoc(&liste, env);
 			// // free(env_struct);
 			ft_expanding(&liste, env);
+			ft_join(&liste);
+			// system("leaks minishell");
+			
+			collect_red(&liste);
+			// ft_join(&liste);
 			// // // system("leaks minishell");
-			// ft_envclear(&env_struct, free);
-			ft_print(liste);
+			// ft_print(liste);
 		}
 		ft_stclear(&liste, free);
 	}

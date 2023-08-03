@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 08:56:48 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/02 18:31:46 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/03 17:55:12 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int	main(int ac, char **av, char **envp)
 	// is_exitstatus("$HOME$");
 	while (1)
 		ft_help(liste, env_struct);
-	// nw_lenght("--$?--$HOME--$?-$H", env_struct);
+	ft_envclear(&env_struct, free);
+	// nw_lenght("$HOME", env_struct);
 	return (0);
 }
 
@@ -56,4 +57,8 @@ is_identifier
 2. Lowercase
 3. Underscore
 4. number
+*/
+/*
+fix the addicionnaly space (ls << "")
+syntaxe error <> ><
 */

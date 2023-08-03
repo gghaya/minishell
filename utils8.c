@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 13:21:15 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/02 18:44:24 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/03 18:54:54 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,23 +41,28 @@
 // 	return (arg);
 // }
 
-int	nw_lenght(char*	arg, t_env	*env)
+int	nw_lenght(char	*arg, t_env	*env)
 {
 	int	i;
 	int	start;
 	int	len;
+	char	*s = NULL;
+	char	*str = NULL;
+
 	i = 0;
 	start = 0;
 	len = ft_strlen(arg);
-
 	if (!arg[i])
 		return (0);
-	while(arg[i])
+	while (arg[i])
 	{
 		if (arg[i] == '$' && arg[i + 1] && arg[i + 1] == '?')
 		{
-			len = len - 2 + ft_strlen(ft_itoa(g_status));
+			s = ft_itoa(g_status);
+			len = len - 2 + ft_strlen(s);
 			i += 2;
+			free(s);
+			s = NULL;
 		}
 		else if (arg[i] == '$')
 		{
@@ -65,12 +70,17 @@ int	nw_lenght(char*	arg, t_env	*env)
 			while (is_id(arg[i]) == 1)
 				i++;
 			if (i > start)
-			len = len - ft_strlen(ft_substr(arg, start, (i - start))) + ft_strlen(getenv_(ft_substr(arg, start, (i - start)),env)) - 1;
+			{
+				s = ft_substr(arg, start, (i - start));
+				str = getenv_(s, env);
+				len = len - ft_strlen(s) + ft_strlen(str) - 1;
+				free(str);
+				str = NULL;
+			}
 		}
 		else
 			i++;
 	}
-	// printf("len : %d\n", len);
 	return (len);
 }
 
@@ -107,7 +117,8 @@ char	*expandd(char	*s, t_env *env)
 				x++;
 				j++;
 			}
-			i+=2;
+			i += 2;
+			free(expnd);
 		}
 		else if (s[i] == '$')
 		{
@@ -126,9 +137,79 @@ char	*expandd(char	*s, t_env *env)
 						x++;
 						j++;
 					}
+					free(expnd);
 				}
 			}
 		}
 	}
-	return (res);
+	res[j] = '\0';
+	return (free(s), res);
+}
+
+void	ft_join(t_tmpliste **tmp)
+{
+	t_tmpliste	*cur;
+	t_tmpliste	*prev;
+
+	cur = (*tmp);
+	prev = NULL;
+	while (cur)
+	{
+		prev = cur;
+		if (cur->quotes != -1 && cur->quotes != -2)
+		{
+			cur = cur->next;
+			while (cur && (cur->quotes != -1 && cur->quotes != -2 && is_token(cur->arg) == 0))
+			{
+				prev->arg = ft_strjoin(prev->arg, cur->arg);
+				ft_deletenode(tmp, prev->next);
+				cur = prev->next;
+			}
+		}
+		else
+			cur = cur->next;
+	}
+}
+
+void collect_red(t_tmpliste	**tmp)
+{
+	t_tmpliste	*cur;
+	int	i = 0;
+
+	cur = (*tmp);
+	while (cur)
+	{
+		if (cur->arg[0] == '>' || cur->arg[0] == '<')
+		{
+			if (cur->arg[1] == '>' || cur->arg[1] == '<')
+			{
+				cur->redct = ft_rednw(get_token(ft_substr(cur->arg, 0, 2)));
+				i = 2;
+			}
+			else
+			{
+				cur->redct = ft_rednw(get_token(ft_substr(cur->arg, 0, 1)));
+				i = 1;
+			}
+			// cur->redct->file = ft_substr(cur->arg, i, ft_strlen(cur->arg));
+			free(cur->arg);
+			cur->arg = NULL;
+			cur = cur->next;
+		}
+		else
+			cur = cur->next;
+	}
+}
+
+int	get_token(char	*s)
+{
+	if (ft_strcmp(s, ">>") == 0)
+		return (free(s), 0);
+	else if (ft_strcmp(s, ">") == 0)
+		return (free(s), 1);
+	else if (ft_strcmp(s, "<") == 0)
+		return (free(s), 2);
+	else if (ft_strcmp(s, "<<") == 0)
+		return (free(s), 3);
+	return (free(s), -1);
 }

@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 18:12:20 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/02 19:03:15 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/03 18:11:50 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ char	*getenv_(char	*key, t_env *env)
 	while (env)
 	{
 		if (strcmp(env->key, key) == 0)
-			return (ft_strdup(env->value));
+			return (free(key), ft_strdup(env->value));
 		env = env->next;
 	}
-	return (NULL);
+	return (free(key), NULL);
 }
 
 char	*fill_arg(char	*arg, char	**substring, int *len, int klen)
@@ -122,13 +122,7 @@ void	ft_expanding(t_tmpliste **tmp, t_env	*env)
 	while (cur)
 	{
 		if (cur->quotes == 0 || cur->quotes == 2)
-		{
-			// s = ft_strdup(cur->arg);
-			// free(cur->arg);
-			// cur->arg = expand(cur->arg, env);
 			cur->arg = expandd(cur->arg, env);
-			// free(s);
-		}
 		cur = cur->next;
 	}
 }

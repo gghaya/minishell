@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:17:30 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/02 19:05:08 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/03 20:01:08 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,19 @@ t_tmpliste	*ft_splt(char *s)
 void	delete_empty(t_tmpliste **tmp)
 {
 	t_tmpliste	*cur;
+	t_tmpliste	*prev;
 
 	cur = (*tmp);
+	prev = cur;
 	while (cur)
 	{
-		if (ft_strcmp(cur->arg, "") == 0 && cur->quotes == 0)
-			ft_deletenode(tmp, cur);
-		cur = cur->next;
+		if ((cur->next) && ft_strcmp(cur->next->arg, "") == 0 && cur->next->quotes == 0)
+			cur = rm_node(tmp, cur->next);
+		else
+			cur = cur->next;
+		prev = cur;
+		// cur = prev->next;
 	}
-	free(cur);
 }
 
 void	ft_heredoc(t_tmpliste **tmp, t_env	*env)
@@ -116,8 +120,6 @@ int	ft_hendel_heredoc(t_tmpliste *h_doc, t_env	*env)
 		if (ft_strcmp(line, h_doc->arg) == 0)
 			break ;
 		line = expandd(line, env);
-		puts("line");
-		puts(line);
 		write(fildes[1], line, ft_strlen(line));
 		free(line);
 	}

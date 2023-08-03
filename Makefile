@@ -6,17 +6,18 @@
 #    By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/19 08:42:13 by gghaya            #+#    #+#              #
-#    Updated: 2023/08/02 13:22:19 by gghaya           ###   ########.fr        #
+#    Updated: 2023/08/03 19:52:41 by gghaya           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-CC = cc -g
+CC = cc -g -fsanitize=address
 FLAGS =  -Wall -Werror -Wextra
 CFILES = main.c utils1.c utils2.c utils3.c utils4.c utils5.c utils6.c utils7.c utils8.c
 LIBFTDIR = ft_libft
 LIBFT = ft_libft/libft.a
+
 OFILES = ${CFILES:.c=.o}
 
 O = ${C:.c=.o}
