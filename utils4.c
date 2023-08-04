@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:09:34 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/02 16:20:26 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/04 12:09:46 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ bool	syntax_error(t_tmpliste *tmp)
 	return (1);
 }
 
-t_tmpliste	*ft_red1(char	*arg, int	*i,  t_tmpliste	*red, int k)
+t_tmpliste	*ft_red1(char	*arg, int	*i, t_tmpliste	*red, int k)
 {
 	t_tmpliste	*node;
 
@@ -92,6 +92,8 @@ int	ft_strcmp(char *s1, char *s2)
 	int	i;
 
 	i = 0;
+	if (!s1 || !s2)
+		return (-1);
 	while ((s1[i] && s2[i]) && s1[i] == s2[i])
 		i++;
 	return (s1[i] - s2[i]);

@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:17:30 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/03 23:20:53 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/04 12:19:15 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ t_tmpliste	*ft_splt(char *s)
 
 	head = NULL;
 	s = ft_strtrim(s, " \t");
-
 	i = 0;
 	while (s[i])
 	{
@@ -44,12 +43,12 @@ void	delete_empty(t_tmpliste **tmp)
 	prev = cur;
 	while (cur)
 	{
-		if ((cur->next) && ft_strcmp(cur->next->arg, "") == 0 && cur->next->quotes == 0)
+		if ((cur->next) && ft_strcmp(cur->next->arg, "") == 0 &&
+			cur->next->quotes == 0)
 			cur = rm_node(tmp, cur->next);
 		else
 			cur = cur->next;
 		prev = cur;
-		// cur = prev->next;
 	}
 }
 
@@ -74,8 +73,8 @@ void	ft_heredoc(t_tmpliste **tmp, t_env	*env)
 					&& cur->quotes != -1 && is_token(cur->arg) == 0))
 			{
 				str = ft_strjoin(str, cur->arg);
-				ft_deletenode(tmp, cur);
-				cur = cur->next;
+				cur = rm_node(tmp, cur);
+				// cur = cur->next;
 			}
 			cur = add_node(prev, str);
 			if (cur != NULL)
@@ -96,20 +95,15 @@ void	deletesp(t_tmpliste **tmp)
 	while (cur)
 	{
 		prev = cur;
-		if (cur->quotes == -1 && cur->next && is_token(cur->next->arg) == 1)
-		{
+		if (cur->quotes == -1 && cur->next && (is_token(cur->next->arg) == 1 ||
+				cur->next->quotes == -2))
 			cur = rm(tmp, cur);
-			// cur = cur->next;
-		}
 		else if (cur->quotes == -2 || is_token(cur->arg) == 1)
 		{
 			if ((cur->next) && cur->next->quotes == -1)
-			{
 				cur = rm(tmp, cur->next);
-				// cur = cur->next;
-			}
 			else
-				cur= cur->next;
+				cur = cur->next;
 		}
 		else
 			cur = cur->next;
@@ -135,21 +129,3 @@ int	ft_hendel_heredoc(t_tmpliste *h_doc, t_env	*env)
 	close(fildes[1]);
 	return (fildes[0]);
 }
-
-// void	delete_empty(t_tmpliste **tmp)
-// {
-// 	t_tmpliste	*cur;
-// 	t_tmpliste	*prev;
-
-// 	cur = (*tmp);
-// 	prev = cur;
-// 	while (cur)
-// 	{
-// 		if ((cur->next) && ft_strcmp(cur->next->arg, "") == 0 && cur->next->quotes == 0)
-// 			cur = rm_node(tmp, cur->next);
-// 		else
-// 			cur = cur->next;
-// 		prev = cur;
-// 		// cur = prev->next;
-// 	}
-// }

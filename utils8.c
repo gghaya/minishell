@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 13:21:15 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/03 23:56:54 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/04 12:01:51 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ int	nw_lenght(char	*arg, t_env	*env)
 	i = 0;
 	start = 0;
 	len = ft_strlen(arg);
-	if (!arg[i])
-		return (0);
+	if (!arg)
+		return (-1);
 	while (arg[i])
 	{
 		if (arg[i] == '$' && arg[i + 1] && arg[i + 1] == '?')
@@ -70,24 +70,19 @@ char	*expandd(char	*s, t_env *env)
 	start = 0;
 	len = nw_lenght(s, env);
 	res = malloc(sizeof(char) * (len + 1));
+	if (!res)
+		return (NULL);
 	while (s[i])
 	{
-		if (s[i] != '$' || (s[i] == '$' && !s[i + 1]) || (s[i] == '$' && s[i+1] && s[i + 1] == '$'))
-		{
-			res[j] = s[i];
-			i++;
-			j++;
-		}
+		if (s[i] != '$' || (s[i] == '$' && !s[i + 1]) || (s[i] == '$' &&
+				s[i + 1] && s[i + 1] == '$'))
+			res[j++] = s[i++];
 		else if (s[i] == '$' && s[i+1] && s[i + 1] == '?')
 		{
 			x = 0;
 			expnd = ft_itoa(g_status);
 			while (expnd[x])
-			{
-				res[j] = expnd[x];
-				x++;
-				j++;
-			}
+				res[j++] = expnd[x++];
 			i += 2;
 			free(expnd);
 		}
@@ -103,11 +98,7 @@ char	*expandd(char	*s, t_env *env)
 				{
 					x = 0;
 					while (expnd[x])
-					{
-						res[j] = expnd[x];
-						x++;
-						j++;
-					}
+						res[j++] = expnd[x++];
 					free(expnd);
 				}
 			}
@@ -160,10 +151,7 @@ void	collect_red(t_tmpliste	**tmp)
 				i = 2;
 			}
 			else
-			{
-				cur->redct = ft_rednw(get_token(ft_substr(cur->arg, 0, 1)));
-				i = 1;
-			}
+				i = collect_help(&cur, cur->arg);
 			cur->redct->file = ft_substr(cur->arg, i, ft_strlen(cur->arg));
 			free(cur->arg);
 			cur->arg = NULL;
@@ -177,15 +165,12 @@ void	collect_red(t_tmpliste	**tmp)
 int	get_token(char	*s)
 {
 	if (ft_strcmp(s, ">>") == 0)
-		return (free(s), 0);
+		return (free(s), APPEND);
 	else if (ft_strcmp(s, ">") == 0)
-		return (free(s), 1);
+		return (free(s),IN);
 	else if (ft_strcmp(s, "<") == 0)
-		return (free(s), 2);
+		return (free(s), OUT);
 	else if (ft_strcmp(s, "<<") == 0)
-		return (free(s), 3);
+		return (free(s), HEREDOC);
 	return (free(s), -1);
 }
-
-
-int	collect_help

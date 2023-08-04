@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 18:12:20 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/03 18:11:50 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/04 11:57:04 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,95 +30,13 @@ char	*getenv_(char	*key, t_env *env)
 	return (free(key), NULL);
 }
 
-char	*fill_arg(char	*arg, char	**substring, int *len, int klen)
-{
-	int		i;
-	char	*res = malloc (sizeof (char) * (len[0] - len[1] + klen + 1));
-		if(!res)
-			return (NULL);
-	int		j;
-	i = 0;
-	j = 0;
-	// printf("%d____%d\n",len[0], len[1]);
-	while (arg[i])
-	{
-		if (arg[i] && arg[i] != '$')
-		{
-			ft_memcpy(res + ft_strlen(res), ft_strdup(&arg[i]), 1);
-			i++;
-		}
-		else if (arg[i] && arg[i] == '$')
-		{
-			i++;
-			// if(!arg[i] || arg[i] == '$' || arg[i] == '?')
-			// {
-				if (!arg[i])
-					ft_memcpy(res + ft_strlen(res), ft_strdup("$"), 1);
-				else if ( arg[i] == '$')
-					ft_memcpy(res + ft_strlen(res), ft_strdup(&arg[i]), 1);
-				else if (arg[i] == '?')
-				{
-					ft_memcpy(res + ft_strlen(res), ft_itoa(g_status), ft_strlen(ft_itoa(g_status)));
-					i++;
-				}
-			// }
-			else
-			{
-			while (arg[i] && is_id(arg[i]) == 1)
-				i++;
-			if (substring[j] != NULL)
-			{
-				ft_memcpy(res + ft_strlen(res), substring[j], ft_strlen(substring[j]));
-			}
-			j++;
-			}
-		}
-	}
-	return (res);
-}
-
-char	*expand(char	*arg, t_env	*env)
-{
-	int		i;
-	int		start;
-	char	**substring = NULL;
-	char	*key = NULL;
-	int		j;
-	int	*len = without_dollar(arg);
-	int	klen = 0;
-	i = 0;
-	start = -1;
-	j = 0;
-
-	substring =  malloc(sizeof(char *)*(len[1] + 1));
-	substring[len[1]] = NULL;
-	// arg = is_exitstatus(arg);
-	while (arg[i])
-	{
-		if (arg[i] && arg[i] == '$' && arg[i + 1] && arg[i+ 1] != '$' && arg[i + 1] != '?')
-		{
-			start = (++i);
-			while (arg[i] && is_id(arg[i]) == 1)
-				i++;
-			if(i == start)
-				break;
-			key = ft_substr(arg, start, i - start);
-			substring[j] = getenv_(key, env);
-			if (substring[j] != NULL)
-				klen = klen + ft_strlen(substring[j]);
-			j++;
-		}
-		else
-			i++;
-	}
-	return (fill_arg(arg, substring, len, klen));
-}
-
 void	ft_expanding(t_tmpliste **tmp, t_env	*env)
 {
 	t_tmpliste	*cur;
 
 	cur = (*tmp);
+	if (!cur)
+		return ;
 	while (cur)
 	{
 		if (cur->quotes == 0 || cur->quotes == 2)
@@ -127,32 +45,48 @@ void	ft_expanding(t_tmpliste **tmp, t_env	*env)
 	}
 }
 
-int	*without_dollar(char	*s)
+void	ft_envclear(t_env **lst, void (*del)(void*))
 {
-	int	i;
-	int	*len =malloc(2*sizeof(int));
+	t_env	*p;
 
-	i = 0;
-	len[0] = 0;//number of caracteres without $
-	len[1] = 0;//number of $
-	while (s[i] != '\0')
+	if (!lst || !*lst || !del)
+		return ;
+	while (*lst)
 	{
-		if (s[i] && s[i] == '$')
-		{
-			if (s[i+1] && s[i + 1]!= '$')
-				len[1]++;
-			else
-				len[0]++;
-			i++;
-			while (s[i] && is_id(s[i]) == 1)
-				i++;
-		}
-		else
-		{
-			i++;			
-			len[0]++;
-		}
+		p = (*lst)->next;
+		del((*lst)->key);
+		del((*lst)->value);
+		free((*lst));
+		(*lst) = p;
 	}
-	printf("number of caracteres without $ : %d  $: %d", len[0], len[1]);
-	return (len);
+	free(*lst);
+}
+
+t_tmpliste	*rm_node(t_tmpliste **begin_list, t_tmpliste *node)
+{
+	t_tmpliste	*cur;
+	t_tmpliste	*prev;
+
+	cur = *begin_list;
+	prev = NULL;
+	if (cur == node)
+	{
+		*begin_list = node->next;
+		free(node->arg);
+		free(node);
+		return (NULL);
+	}
+	while (cur != NULL)
+	{
+		if (cur == node)
+		{
+			prev->next = cur->next;
+			free(cur->arg);
+			free(cur);
+			return (prev);
+		}
+		prev = cur;
+		cur = cur->next;
+	}
+	return (NULL);
 }

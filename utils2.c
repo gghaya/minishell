@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 11:21:20 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/03 22:26:40 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/04 11:42:36 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,79 +100,4 @@ void	ft_stclear(t_tmpliste **lst, void (*del)(void*))
 		(*lst) = p;
 	}
 	free(*lst);
-}
-
-void	ft_envclear(t_env **lst, void (*del)(void*))
-{
-	t_env	*p;
-
-	if (!lst || !*lst || !del)
-		return ;
-	while (*lst)
-	{
-		p = (*lst)->next;
-		del((*lst)->key);
-		del((*lst)->value);
-		free((*lst));
-		(*lst) = p;
-	}
-	free(*lst);
-}
-
-t_tmpliste *rm_node(t_tmpliste **begin_list, t_tmpliste *node)
-{
-	t_tmpliste	*cur;
-	t_tmpliste	*prev;
-
-	cur = *begin_list;
-	prev = NULL;
-	if (cur == node)
-	{
-		*begin_list = node->next;
-		free(node->arg);
-		free(node);
-		return (NULL);
-	}
-	while (cur != NULL)
-	{
-		if (cur == node)
-		{
-			prev->next = cur->next;
-			free(cur->arg);
-			free(cur);
-			return (prev);
-		}
-		prev = cur;
-		cur = cur->next;
-	}
-	return (NULL);
-}
-
-t_tmpliste *rm(t_tmpliste **begin_list, t_tmpliste *node)
-{
-	t_tmpliste	*cur;
-	t_tmpliste	*prev;
-
-	cur = *begin_list;
-	prev = NULL;
-	if (cur == node)
-	{
-		*begin_list = node->next;
-		free(node->arg);
-		free(node);
-		return (NULL);
-	}
-	while (cur != NULL)
-	{
-		if (cur == node)
-		{
-			prev->next = cur->next;
-			free(cur->arg);
-			free(cur);
-			return (prev->next);
-		}
-		prev = cur;
-		cur = cur->next;
-	}
-	return (NULL);
 }

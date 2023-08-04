@@ -6,17 +6,18 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 08:56:48 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/03 23:25:53 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/04 11:29:59 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int	g_status = 0;
+
 int	main(int ac, char **av, char **envp)
 {
 	t_tmpliste	*liste;
-	t_env	*env_struct = fill_env(envp);
+	t_env		*env_struct = fill_env(envp);
 
 	liste = NULL;
 	(void)ac;

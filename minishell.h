@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 08:40:47 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/03 23:37:36 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/04 12:17:21 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ t_tmpliste	*add_node(t_tmpliste *prev, char *content);
 char		*ft_check_cmd(char *arg, int	*i);
 t_tmpliste	*ft_check_redirect(char *arg, t_tmpliste	*redirect,
 				int	*i, int k);
-t_tmpliste	*ft_red1(char	*arg, int	*i,  t_tmpliste	*red, int k);
+t_tmpliste	*ft_red1(char	*arg, int	*i, t_tmpliste	*red, int k);
 int			lstsize(t_tmpliste *lst);
 int			is_token(char *string);
 bool		syntax_error(t_tmpliste *tmp);
@@ -107,4 +107,6 @@ void		collect_red(t_tmpliste	**tmp);
 t_tmpliste	*rm_node(t_tmpliste **begin_list, t_tmpliste *node);
 t_tmpliste	*rm(t_tmpliste **begin_list, t_tmpliste *node);
 void		ft_help1(t_tmpliste *liste, t_env *env);
+int			collect_help(t_tmpliste	**cur, char	*s);
+bool		syntax_err(t_tmpliste **liste);
 #endif

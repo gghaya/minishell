@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 23:30:50 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/03 23:34:28 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/04 12:22:59 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,46 @@ void	ft_help1(t_tmpliste *liste, t_env *env)
 	ft_join(&liste);
 	collect_red(&liste);
 	ft_print(liste);
+}
+
+int	collect_help(t_tmpliste	**cur, char	*s)
+{
+	(*cur)->redct = ft_rednw(get_token(ft_substr(s, 0, 1)));
+	return (1);
+}
+
+t_tmpliste	*rm(t_tmpliste **begin_list, t_tmpliste *node)
+{
+	t_tmpliste	*cur;
+	t_tmpliste	*prev;
+
+	cur = *begin_list;
+	prev = NULL;
+	if (cur == node)
+	{
+		*begin_list = node->next;
+		free(node->arg);
+		free(node);
+		return (NULL);
+	}
+	while (cur != NULL)
+	{
+		if (cur == node)
+		{
+			prev->next = cur->next;
+			free(cur->arg);
+			free(cur);
+			return (prev->next);
+		}
+		prev = cur;
+		cur = cur->next;
+	}
+	return (NULL);
+}
+
+bool	syntax_err(t_tmpliste **liste)
+{
+	g_status = 258;
+	printf("minishell: Syntax Error\n");
+	return (ft_stclear(liste, free), 0);
 }

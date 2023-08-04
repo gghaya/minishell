@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:12:40 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/03 20:26:32 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/04 12:03:10 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*ft_check_cmd(char *arg, int	*i)
 	while ((arg[*i] && arg[*i] != '>' && arg[*i] != '<'))
 		(*i)++;
 	// if ((*i) > start)
-	cmd = ft_substr(arg, start, (*i) - start);
+		cmd = ft_substr(arg, start, (*i) - start);
 	return (cmd);
 }
 
@@ -43,7 +43,6 @@ void	ft_print(t_tmpliste *t)
 	while (t != NULL)
 	{
 		printf("command (%s) quote (%d)\n", t->arg, t->quotes);
-		// puts(t->arg);
 		while (t->redct != NULL)
 		{
 			printf ("	->redction : (%d) file : (%s)\n",
