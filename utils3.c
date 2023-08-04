@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:20:33 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/04 12:09:07 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/04 20:11:44 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ bool	ft_help(t_tmpliste *liste, t_env	*env)
 
 	k = 0;
 	input = readline("Minishell$> ");
-	if (!input)
-		exit(1);
+	// if (!input)
+	// 	exit(1);
 	add_history(input);
 	if (balanced_quotes(input))
 	{
@@ -52,7 +52,7 @@ bool	ft_help(t_tmpliste *liste, t_env	*env)
 		ft_deletespace(&liste);
 		ft_redirection(&liste, k);
 		delete_empty(&liste);
-		if (syntax_error(liste) == 0)
+		if (syntax_error(liste) == 0 || red_error(liste) == -1)
 			return (ft_stclear(&liste, free), 0);
 		else
 			ft_help1(liste, env);
@@ -81,6 +81,8 @@ int	is_token(char *string)
 		return (1);
 	else if (ft_strcmp(string, ">") == 0 || ft_strcmp(string, "<") == 0)
 		return (1);
+	else if (ft_strcmp(string, "><") == 0 || ft_strcmp(string, "<>") == 0)
+		return (-1);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 13:21:15 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/04 12:01:51 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/04 14:47:57 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,3 +174,4 @@ int	get_token(char	*s)
 		return (free(s), HEREDOC);
 	return (free(s), -1);
 }
+

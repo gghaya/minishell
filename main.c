@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 08:56:48 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/04 11:29:59 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/04 20:15:54 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int	main(int ac, char **av, char **envp)
 	liste = NULL;
 	(void)ac;
 	(void)av;
+	// signal(SIGINT, c_handler);
+	signal(SIGTERM, d_handler);
 	while (1)
 		ft_help(liste, env_struct);
 	ft_envclear(&env_struct, free);
@@ -33,6 +35,8 @@ int	sstrlen(const char *s)
 	int	i;
 
 	i = 0;
+	if (!s)
+		return (0);
 	while (s[i])
 		i++;
 	return (i);
@@ -57,4 +61,26 @@ is_identifier
 /*
 fix the addicionnaly space (ls << "")
 syntaxe error <> ><
+
+protection malloc
 */
+// void	c_handler(int	signum)
+// {
+// 	(void)signum;
+// 	return ;
+// }
+
+void	d_handler(int	signum)
+{
+	// (void)signum;
+
+	if (signum == SIGTERM) {
+        printf("Exit\n");
+        exit(0); 
+		}
+}
+
+// void	donothing_handler(int	signum)
+// {
+	
+// }

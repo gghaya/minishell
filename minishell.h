@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 08:40:47 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/04 12:17:21 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/04 20:07:55 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <string.h>
 # include "ft_libft/libft.h"
 # include <stdbool.h>
+# include <signal.h>
 
 # define IN	0
 # define OUT	1
@@ -54,17 +55,17 @@ typedef struct s_tmpliste
 typedef struct s_finalstruct
 {
 	char					**cmd;
-	t_redirect				*rdct;
+	struct s_redirection	*rdct;
 	struct s_finalstruct	*next;
 }	t_final;
 
 bool		balanced_quotes(char *str);
 t_tmpliste	*ft_splt(char *s);
 t_tmpliste	*ft_lstnw(char *content, int quotes);
-void		ft_lstad_back(t_tmpliste **lst, t_tmpliste *new);
 void		ft_print(t_tmpliste *t);
 void		ft_spacepipe(t_tmpliste **head, char *s, int *i);
 void		ft_quotes(t_tmpliste **head, char *s, int *i);
+void		ft_lstad_back(t_tmpliste **lst, t_tmpliste *new);
 void		ft_string(t_tmpliste **head, char *s, int *i);
 void		ft_stclear(t_tmpliste **lst, void (*del)(void*));
 void		ft_deletenode(t_tmpliste **begin_list, t_tmpliste *node);
@@ -106,7 +107,17 @@ int			get_token(char	*s);
 void		collect_red(t_tmpliste	**tmp);
 t_tmpliste	*rm_node(t_tmpliste **begin_list, t_tmpliste *node);
 t_tmpliste	*rm(t_tmpliste **begin_list, t_tmpliste *node);
-void		ft_help1(t_tmpliste *liste, t_env *env);
+t_final		*ft_help1(t_tmpliste *liste, t_env *env);
 int			collect_help(t_tmpliste	**cur, char	*s);
-bool		syntax_err(t_tmpliste **liste);
+int			red_error(t_tmpliste *tmp);
+t_redirect	*copy_red(int token, char	*file);
+t_final		*new_final(int	len);
+void	add_final_back(t_final **lst, t_final *new);
+void	ft_redct_back(t_redirect **lst, t_redirect *new);
+t_tmpliste	*help_final(t_final	**fhead, t_tmpliste	*cur, int	len);
+int	cmd_len(t_tmpliste	*prev);
+t_final	*fill_final(t_tmpliste **tmp);
+void show_final(t_final	*f);
+void	d_handler(int	signum);
+void	c_handler(int	signum);
 #endif

@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 14:02:54 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/03 17:00:29 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/04 20:13:06 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ bool	balanced_quotes(char *str)
 
 	s = NULL;
 	i = 0;
+	if (!str)
+		return (0);
 	while (str[i])
 	{
 		if (str[i] == '\"' || str[i] == '\'')
@@ -102,15 +104,3 @@ bool	balanced_quotes(char *str)
 	return (1);
 }
 
-t_redirect	*ft_rednw(int token)
-{
-	t_redirect	*list;
-
-	list = (t_redirect *)malloc(sizeof(t_redirect));
-	if (!list)
-		return (NULL);
-	list->token = token;
-	list->file = NULL;
-	list->next = NULL;
-	return (list);
-}
