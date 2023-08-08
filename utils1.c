@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 14:02:54 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/04 20:13:06 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/08 11:58:20 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ bool	balanced_quotes(char *str)
 	char	*s;
 	int		i;
 
-	s = NULL;
 	i = 0;
 	if (!str)
 		return (0);
@@ -103,4 +102,3 @@ bool	balanced_quotes(char *str)
 	}
 	return (1);
 }
-

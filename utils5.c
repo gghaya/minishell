@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:12:40 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/04 12:03:10 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/08 11:47:45 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ char	*ft_check_cmd(char *arg, int	*i)
 	start = (*i);
 	while ((arg[*i] && arg[*i] != '>' && arg[*i] != '<'))
 		(*i)++;
-	// if ((*i) > start)
-		cmd = ft_substr(arg, start, (*i) - start);
+	cmd = ft_substr(arg, start, (*i) - start);
 	return (cmd);
 }
 

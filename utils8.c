@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 13:21:15 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/04 14:47:57 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/08 11:51:00 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,98 +14,54 @@
 
 int	nw_lenght(char	*arg, t_env	*env)
 {
-	int	i;
-	int	start;
+	t_s	*s;
 	int	len;
-	char	*s = NULL;
-	char	*str = NULL;
 
-	i = 0;
-	start = 0;
-	len = ft_strlen(arg);
+	s = malloc(sizeof(t_s));
+	s->i = 0;
+	s->start = 0;
+	s->len = ft_strlen(arg);
 	if (!arg)
 		return (-1);
-	while (arg[i])
+	while (arg[s->i])
 	{
-		if (arg[i] == '$' && arg[i + 1] && arg[i + 1] == '?')
-		{
-			s = ft_itoa(g_status);
-			len = len - 2 + ft_strlen(s);
-			i += 2;
-			free(s);
-			s = NULL;
-		}
-		else if (arg[i] == '$')
-		{
-			start = ++i;
-			while (is_id(arg[i]) == 1)
-				i++;
-			if (i > start)
-			{
-				s = ft_substr(arg, start, (i - start));
-				str = getenv_(s, env);
-				len = len - ft_strlen(s) + ft_strlen(str) - 1;
-				free(str);
-				str = NULL;
-			}
-		}
+		if (arg[s->i] == '$' && arg[s->i + 1] && arg[s->i + 1] == '?')
+			s->i = do_1(s);
+		else if (arg[s->i] == '$')
+			s->i = do_2(s, arg, env);
 		else
-			i++;
+			s->i++;
 	}
-	return (len);
+	len = s->len;
+	return (free(s), len);
 }
 
 char	*expandd(char	*s, t_env *env)
 {
-	int len;
-	int	i;
-	int	j;
-	int	start;
-	int	x = 0;
-	char	*expnd;
+	t_ex	*ex;
 	char	*res;
 
-	i = 0;
-	j = 0;
-	start = 0;
-	len = nw_lenght(s, env);
-	res = malloc(sizeof(char) * (len + 1));
-	if (!res)
+	ex = malloc(sizeof(t_ex));
+	ex->i = 0;
+	ex->j = 0;
+	ex->start = 0;
+	ex->len = nw_lenght(s, env);
+	ex->res = malloc(sizeof(char) * (ex->len + 1));
+	if (!ex->res)
 		return (NULL);
-	while (s[i])
+	while (s[ex->i])
 	{
-		if (s[i] != '$' || (s[i] == '$' && !s[i + 1]) || (s[i] == '$' &&
-				s[i + 1] && s[i + 1] == '$'))
-			res[j++] = s[i++];
-		else if (s[i] == '$' && s[i+1] && s[i + 1] == '?')
-		{
-			x = 0;
-			expnd = ft_itoa(g_status);
-			while (expnd[x])
-				res[j++] = expnd[x++];
-			i += 2;
-			free(expnd);
-		}
-		else if (s[i] == '$')
-		{
-			start = ++i;
-			while (s[i] && is_id(s[i]) == 1)
-				i++;
-			if (i > start)
-			{
-				expnd = getenv_(ft_substr(s, start, i - start), env);
-				if (expnd != NULL)
-				{
-					x = 0;
-					while (expnd[x])
-						res[j++] = expnd[x++];
-					free(expnd);
-				}
-			}
-		}
+		if (s[ex->i] != '$' || (s[ex->i] == '$' && !s[ex->i + 1])
+			|| (s[ex->i] == '$' && s[ex->i + 1] && s[ex->i + 1] == '$'))
+			ex->res[ex->j++] = s[ex->i++];
+		else if (s[ex->i] == '$' && s[ex->i + 1] && s[ex->i + 1] == '?')
+			expand_1(ex);
+		else if (s[ex->i] == '$')
+			expand_2(ex, s, env);
 	}
-	res[j] = '\0';
-	return (free(s), res);
+	ex->res[ex->j] = '\0';
+	res = ex->res;
+	return (free(s), free(ex), res);
 }
 
 void	ft_join(t_tmpliste **tmp)
@@ -167,11 +123,10 @@ int	get_token(char	*s)
 	if (ft_strcmp(s, ">>") == 0)
 		return (free(s), APPEND);
 	else if (ft_strcmp(s, ">") == 0)
-		return (free(s),IN);
+		return (free(s), IN);
 	else if (ft_strcmp(s, "<") == 0)
 		return (free(s), OUT);
 	else if (ft_strcmp(s, "<<") == 0)
 		return (free(s), HEREDOC);
 	return (free(s), -1);
 }
-

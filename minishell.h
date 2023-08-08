@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 08:40:47 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/04 20:07:55 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/08 14:48:04 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <readline/readline.h>
+# include <readline/history.h>
 # include <string.h>
 # include "ft_libft/libft.h"
 # include <stdbool.h>
@@ -27,7 +28,7 @@
 # define APPEND	2
 # define HEREDOC	3
 
-extern int g_status;
+int	g_status;
 
 typedef struct s_env
 {
@@ -59,6 +60,33 @@ typedef struct s_finalstruct
 	struct s_finalstruct	*next;
 }	t_final;
 
+typedef struct s_ex
+{
+	int		len;
+	int		i;
+	int		j;
+	int		start;
+	int		x;
+	char	*expnd;
+	char	*res;
+}	t_ex;
+
+typedef struct s_strct
+{
+	t_tmpliste	*cur;
+	t_tmpliste	*prev;
+	char		*str;
+}	t_strct;
+
+typedef struct s_s
+{
+	int		i;
+	int		start;
+	int		len;
+	char	*s;
+	char	*str;
+}	t_s;
+
 bool		balanced_quotes(char *str);
 t_tmpliste	*ft_splt(char *s);
 t_tmpliste	*ft_lstnw(char *content, int quotes);
@@ -70,7 +98,7 @@ void		ft_string(t_tmpliste **head, char *s, int *i);
 void		ft_stclear(t_tmpliste **lst, void (*del)(void*));
 void		ft_deletenode(t_tmpliste **begin_list, t_tmpliste *node);
 void		ft_deletespace(t_tmpliste **begin_list);
-bool		ft_help(t_tmpliste *liste, t_env *envp);
+bool		ft_help(char	*input, t_env *envp);
 int			not_in(char *string, char c);
 void		ft_redirection(t_tmpliste **begin_list, int k);
 t_tmpliste	*add_node(t_tmpliste *prev, char *content);
@@ -92,13 +120,11 @@ t_env		*ft_envnw(char *key);
 void		ft_add_env(t_env **lst, t_env *new);
 t_env		*fill_env(char	**envp);
 void		ft_expanding(t_tmpliste **tmp, t_env	*env);
-// char		*expand(char	*arg, t_env	*env);
 char		*fill_arg(char	*arg, char	**substring, int *len, int klen);
 char		*getenv_(char	*key, t_env *env);
 int			is_id(char c);
 void		ft_envclear(t_env **lst, void (*del)(void*));
 int			*without_dollar(char	*s);
-// char		*is_exitstatus(char *arg);
 int			nw_lenght(char	*arg, t_env	*env);
 char		*expandd(char	*s, t_env *env);
 void		ft_join(t_tmpliste **tmp);
@@ -111,13 +137,17 @@ t_final		*ft_help1(t_tmpliste *liste, t_env *env);
 int			collect_help(t_tmpliste	**cur, char	*s);
 int			red_error(t_tmpliste *tmp);
 t_redirect	*copy_red(int token, char	*file);
-t_final		*new_final(int	len);
-void	add_final_back(t_final **lst, t_final *new);
-void	ft_redct_back(t_redirect **lst, t_redirect *new);
-t_tmpliste	*help_final(t_final	**fhead, t_tmpliste	*cur, int	len);
-int	cmd_len(t_tmpliste	*prev);
-t_final	*fill_final(t_tmpliste **tmp);
-void show_final(t_final	*f);
-void	d_handler(int	signum);
-void	c_handler(int	signum);
+t_final		*new_final(int len);
+void		add_final_back(t_final **lst, t_final *new);
+void		ft_redct_back(t_redirect **lst, t_redirect *new);
+t_tmpliste	*help_final(t_final	**fhead, t_tmpliste	*cur, int len);
+int			cmd_len(t_tmpliste	*prev);
+t_final		*fill_final(t_tmpliste **tmp);
+void		show_final(t_final	*f);
+void		quit_handler(int signum);
+void		c_handler(int signum);
+int			do_1(t_s *s);
+int			do_2(t_s *s, char	*arg, t_env *env);
+int			expand_2(t_ex	*ex, char	*s, t_env	*env);
+int			expand_1(t_ex	*ex);
 #endif

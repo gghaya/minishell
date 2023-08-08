@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:20:33 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/04 20:11:44 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/07 17:50:50 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,13 @@ void	ft_redirection(t_tmpliste **begin_list, int k)
 	free(cur);
 }
 
-bool	ft_help(t_tmpliste *liste, t_env	*env)
+bool	ft_help(char	*input, t_env	*env)
 {
-	char	*input;
-	int		k;
+	int			k;
+	t_tmpliste	*liste;
 
 	k = 0;
-	input = readline("Minishell$> ");
-	// if (!input)
-	// 	exit(1);
+	liste = NULL;
 	add_history(input);
 	if (balanced_quotes(input))
 	{

@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 15:00:58 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/04 18:29:24 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/08 12:02:53 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ t_final	*fill_final(t_tmpliste **tmp)
 
 	cur = (*tmp);
 	fhead = NULL;
-
 	len = cmd_len(cur);
 	while (cur)
 	{
@@ -64,7 +63,6 @@ int	cmd_len(t_tmpliste	*prev)
 			i++;
 		cur = cur->next;
 	}
-	printf("%d\n", i);
 	return (i);
 }
 
@@ -92,71 +90,4 @@ t_final	*new_final(int len)
 	list->rdct = NULL;
 	list->next = NULL;
 	return (list);
-}
-
-void	add_final_back(t_final **lst, t_final *new)
-{
-	t_final	*tmp;
-
-	tmp = (*lst);
-	if (*lst == NULL)
-	{
-		*lst = new;
-		return ;
-	}
-	while (tmp->next != NULL)
-	{
-		tmp = tmp->next;
-	}
-	tmp->next = new;
-}
-
-t_tmpliste	*help_final(t_final	**fhead, t_tmpliste	*cur, int	len)
-{
-	t_redirect	*nw;
-	t_final		*final;
-	int			i;
-	// (void)fhead;
-	// (void)len;
-	i = 0;
-	final = new_final(len);
-	while (cur && cur->quotes != -2)
-	{
-		if (cur->arg != NULL && cur->quotes != -1)
-			final->cmd[i++] = cur->arg;
-		// else if (cur->quotes == -1)
-		// 	continue ;
-		else if (cur->redct != NULL)
-		{
-			nw = cur->redct;
-			ft_redct_back(&final->rdct, nw);
-		}
-		// printf("(%s)", cur->arg);
-		// puts(cur->arg);
-		cur = cur->next;
-	}
-	final->cmd[len] = NULL;
-	add_final_back(fhead, final);
-	// printf("*******\n");
-	return (cur);
-}
-
-void show_final(t_final	*f)
-{
-	int	i = 0;
-	while (f)
-	{
-		i = 0;
-		while (f->cmd[i] != NULL)
-		{
-			printf("----cmd %d: %s\n", i, f->cmd[i]);
-			i++;
-		}
-		while (f->rdct != NULL)
-		{
-			printf("**red : %d    %s\n", f->rdct->token,f->rdct->file);
-			f->rdct = f->rdct->next;
-		}
-		f = f->next;
-	}
 }

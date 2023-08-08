@@ -6,26 +6,37 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 08:56:48 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/04 20:15:54 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/08 16:24:53 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	g_status = 0;
-
 int	main(int ac, char **av, char **envp)
 {
-	t_tmpliste	*liste;
-	t_env		*env_struct = fill_env(envp);
+	char		*input;
+	t_env		*env_struct;
 
-	liste = NULL;
-	(void)ac;
+	g_status = 0;
+	// rl_catch_signals = 0;
+ 	(void)ac;
 	(void)av;
-	// signal(SIGINT, c_handler);
-	signal(SIGTERM, d_handler);
+	signal(SIGINT, &c_handler);
+	signal(SIGQUIT, &quit_handler);
+	env_struct = fill_env(envp);
 	while (1)
-		ft_help(liste, env_struct);
+	{
+		input = readline("Minishell$ ");
+		if (input == NULL)
+		{
+			// write (1, "exit\n", 5);
+			printf("\033[11C");
+			printf("\033[1A");
+			printf("exit\n");
+			exit(0);
+		}
+		ft_help(input, env_struct);
+	}
 	ft_envclear(&env_struct, free);
 	return (0);
 }
@@ -64,23 +75,20 @@ syntaxe error <> ><
 
 protection malloc
 */
-// void	c_handler(int	signum)
-// {
-// 	(void)signum;
-// 	return ;
-// }
-
-void	d_handler(int	signum)
+void	c_handler(int signum)
 {
-	// (void)signum;
-
-	if (signum == SIGTERM) {
-        printf("Exit\n");
-        exit(0); 
-		}
+	if (signum == SIGINT)
+	{
+		write (1, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
 }
 
-// void	donothing_handler(int	signum)
-// {
-	
-// }
+void	quit_handler(int signum)
+{
+	if (signum == SIGQUIT)
+		return ;
+
+}

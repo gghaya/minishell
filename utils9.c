@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 23:30:50 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/04 17:29:08 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/08 15:28:59 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ t_env	*fill_env(char	**envp)
 t_final	*ft_help1(t_tmpliste *liste, t_env *env)
 {
 	t_final	*f;
+
 	deletesp(&liste);
 	ft_heredoc(&liste, env);
 	ft_expanding(&liste, env);
@@ -49,7 +50,6 @@ t_final	*ft_help1(t_tmpliste *liste, t_env *env)
 	collect_red(&liste);
 	f = fill_final(&liste);
 	show_final(f);
-	// ft_print(liste);
 	return (f);
 }
 
@@ -99,22 +99,4 @@ t_redirect	*ft_rednw(int token)
 	list->file = NULL;
 	list->next = NULL;
 	return (list);
-}
-
-int	red_error(t_tmpliste	*liste)
-{
-	t_tmpliste	*cur;
-
-	cur = liste;
-	while (cur)
-	{
-		if (is_token(cur->arg) == -1)
-		{
-			g_status = 258;
-			printf("minishell: Syntax Error\n");
-			return (-1);
-		}
-		cur = cur->next;
-	}
-	return (0);
 }
