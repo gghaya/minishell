@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:17:30 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/08 16:48:44 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/09 11:20:45 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,65 +106,66 @@ void	deletesp(t_tmpliste **tmp)
 	}
 }
 
-// int	ft_hendel_heredoc(t_tmpliste *h_doc, t_env	*env)
-// {
-// 	char	*line;
-// 	int		fildes[2];
-
-// 	pipe(fildes);
-// 	while (1)
-// 	{
-// 		line = readline(">");
-// 		if (ft_strcmp(line, h_doc->arg) == 0 || line == NULL)
-// 			break ;
-// 		line = expandd(line, env);
-// 		write(fildes[1], line, ft_strlen(line));
-// 		free(line);
-// 	}
-// 	free(line);
-// 	close(fildes[1]);
-// 	return (fildes[0]);
-// }
-
-void handle(int sig)
-{
-	(void)sig;
-	printf("\n");
-	exit(0);
-}
-
 int	ft_hendel_heredoc(t_tmpliste *h_doc, t_env	*env)
 {
 	char	*line;
 	int		fildes[2];
-	int ret = -1;
-	int		pid;
-	int		status;
 
-	signal(SIGINT, SIG_IGN);
-	pid = fork();
-	if (pid == 0)
+	pipe(fildes);
+	while (1)
 	{
-		signal(SIGINT, &handle);
-		pipe(fildes);
-		while (1)
-		{
-			line = readline(">");
-			if (ft_strcmp(line, h_doc->arg) == 0 || line == NULL)
-			{
-				free(line);
-				close(fildes[1]);
-				exit (fildes[0]);
-			}
-			line = expandd(line, env);
-			write(fildes[1], line, ft_strlen(line));
-			printf("%s\n", line);
-			free(line);
-		}
+		line = readline(">");
+		if (ft_strcmp(line, h_doc->arg) == 0 || line == NULL)
+			break ;
+		line = expandd(line, env);
+		write(fildes[1], line, ft_strlen(line));
+		free(line);
 	}
-	waitpid(pid, &status, 0);
-	signal(SIGINT, &c_handler);
-	if (WIFEXITED(status))
-		ret = WEXITSTATUS(status);
-	return (ret);
+	free(line);
+	close(fildes[1]);
+	h_doc->fd = fildes[0];
+	return (fildes[0]);
 }
+
+// void handle(int sig)
+// {
+// 	(void)sig;
+// 	printf("\n");
+// 	exit(0);
+// }
+
+// int	ft_hendel_heredoc(t_tmpliste *h_doc, t_env	*env)
+// {
+// 	char	*line;
+// 	int		fildes[2];
+// 	int ret = -1;
+// 	int		pid;
+// 	int		status;
+
+// 	signal(SIGINT, SIG_IGN);
+// 	pid = fork();
+// 	if (pid == 0)
+// 	{
+// 		signal(SIGINT, &handle);
+// 		pipe(fildes);
+// 		while (1)
+// 		{
+// 			line = readline(">");
+// 			if (ft_strcmp(line, h_doc->arg) == 0 || line == NULL)
+// 			{
+// 				free(line);
+// 				close(fildes[1]);
+// 				exit (fildes[0]);
+// 			}
+// 			line = expandd(line, env);
+// 			write(fildes[1], line, ft_strlen(line));
+// 			printf("%s\n", line);
+// 			free(line);
+// 		}
+// 	}
+// 	waitpid(pid, &status, 0);
+// 	signal(SIGINT, &c_handler);
+// 	if (WIFEXITED(status))
+// 		ret = WEXITSTATUS(status);
+// 	return (ret);
+// }

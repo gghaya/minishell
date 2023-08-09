@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 15:00:58 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/08 12:02:53 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/09 11:10:02 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ t_final	*new_final(int len)
 	if (!list)
 		return (NULL);
 	list->cmd = malloc(sizeof(char *) * (len + 1));
+	list->fd = -1;
 	list->rdct = NULL;
 	list->next = NULL;
 	return (list);

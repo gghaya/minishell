@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 13:21:15 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/08 11:51:00 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/09 11:19:04 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	ft_join(t_tmpliste **tmp)
 {
 	t_tmpliste	*cur;
 	t_tmpliste	*prev;
+	int			fd;
 
 	cur = (*tmp);
 	prev = NULL;
@@ -77,10 +78,13 @@ void	ft_join(t_tmpliste **tmp)
 		if (cur->quotes != -1 && cur->quotes != -2)
 		{
 			cur = cur->next;
+			if (cur != NULL)
+				fd = cur->fd;
 			while (cur && (cur->quotes != -1 && cur->quotes != -2
 					&& is_token(cur->arg) == 0))
 			{
 				prev->arg = ft_strjoin(prev->arg, cur->arg);
+				prev->fd = fd;
 				ft_deletenode(tmp, prev->next);
 				cur = prev->next;
 			}

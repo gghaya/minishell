@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 11:44:18 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/08 11:58:38 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/09 11:13:10 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,13 @@ t_tmpliste	*help_final(t_final	**fhead, t_tmpliste	*cur, int len)
 	while (cur && cur->quotes != -2)
 	{
 		if (cur->arg != NULL && cur->quotes != -1)
+		{
 			final->cmd[i++] = cur->arg;
+		}
 		else if (cur->redct != NULL)
 		{
+			if (cur->redct->token == HEREDOC && cur->fd != -1)
+				final->fd = cur->fd;
 			nw = cur->redct;
 			ft_redct_back(&final->rdct, nw);
 		}

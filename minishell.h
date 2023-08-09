@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 08:40:47 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/08 14:48:04 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/09 11:09:04 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_finalstruct
 	char					**cmd;
 	struct s_redirection	*rdct;
 	struct s_finalstruct	*next;
+	int						fd;
 }	t_final;
 
 typedef struct s_ex

@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 23:30:50 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/08 15:28:59 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/09 11:14:46 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ t_final	*ft_help1(t_tmpliste *liste, t_env *env)
 	ft_expanding(&liste, env);
 	ft_join(&liste);
 	collect_red(&liste);
+	// ft_print(liste);
 	f = fill_final(&liste);
 	show_final(f);
 	return (f);

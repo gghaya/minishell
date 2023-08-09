@@ -6,7 +6,7 @@
 /*   By: gghaya <gghaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 11:56:11 by gghaya            #+#    #+#             */
-/*   Updated: 2023/08/08 16:40:31 by gghaya           ###   ########.fr       */
+/*   Updated: 2023/08/09 11:14:22 by gghaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	show_final(t_final	*f)
 		}
 		while (f->rdct != NULL)
 		{
-			printf("**red : %d    %s\n", f->rdct->token, f->rdct->file);
+			printf("**red : %d    %s  fd :(%d)\n", f->rdct->token, f->rdct->file, f->fd);
 			f->rdct = f->rdct->next;
 		}
 		f = f->next;
